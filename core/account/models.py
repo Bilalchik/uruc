@@ -30,6 +30,7 @@ class MyUserManager(BaseUserManager):
             email=email,
             first_name=first_name,
             last_name=last_name,
+            password=password
         )
         user.is_admin = True
         user.save(using=self._db)
