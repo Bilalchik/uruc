@@ -1,3 +1,4 @@
+from datetime import timedelta
 from pathlib import Path
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
@@ -27,6 +28,7 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
     'rest_framework',
     'account',
+    'rest_framework_simplejwt',
 ]
 
 MIDDLEWARE = [
@@ -114,3 +116,16 @@ DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
 AUTH_USER_MODEL = 'account.MyUser'
 
+REST_FRAMEWORK = {
+    'DEFAULT_AUTHENTICATION_CLASSES': (
+        'rest_framework_simplejwt.authentication.JWTAuthentication',
+    )
+}
+
+SIMPLE_JWT = {
+    'ACCESS_TOKEN_LIFETIME': timedelta(days=5),  # Продолжительность жизни access token
+    'SLIDING_TOKEN_REFRESH_LIFETIME': timedelta(days=1),  # Продолжительность жизни sliding token
+    'SLIDING_TOKEN_LIFETIME': timedelta(days=1),  # Продолжительность жизни sliding token
+    'SLIDING_TOKEN_REFRESH_REUSE_ALLOWED': False,
+    'SLIDING_TOKEN_REFRESH_EXP_CLAIM': 'refresh_exp',
+}
