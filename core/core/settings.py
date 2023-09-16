@@ -14,7 +14,7 @@ SECRET_KEY = 'django-insecure-vx)aviiq()&^ez=_3hgwkk-sbh&xyo+ks@h*cmje#-r!ys_242
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = ["*"]
 
 
 # Application definition
@@ -30,9 +30,11 @@ INSTALLED_APPS = [
     'rest_framework',
     'account',
     'rest_framework_simplejwt',
+    'corsheaders',
 ]
 
 MIDDLEWARE = [
+    "corsheaders.middleware.CorsMiddleware",
     'django.middleware.security.SecurityMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
     'django.middleware.common.CommonMiddleware',
@@ -130,3 +132,7 @@ SIMPLE_JWT = {
     'SLIDING_TOKEN_REFRESH_REUSE_ALLOWED': False,
     'SLIDING_TOKEN_REFRESH_EXP_CLAIM': 'refresh_exp',
 }
+
+# CORS
+CORS_ALLOW_ALL_ORIGINS = True
+CORS_ORIGIN_ALLOW_ALL = True
