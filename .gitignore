@@ -242,3 +242,4 @@ cython_debug/
 /Pipfile
 /Pipfile.lock
 /.idea
+/core/tree_photos
