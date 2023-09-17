@@ -3,10 +3,10 @@ import math
 from rest_framework import status
 from rest_framework.views import APIView
 from rest_framework.response import Response
+from rest_framework.permissions import IsAuthenticated
 
 from .models import Plant
-from .serializers import PlantSerializer
-from geopy.distance import great_circle
+from .serializers import PlantSerializer, PlantCreateSerializer
 from drf_yasg.utils import swagger_auto_schema
 from drf_yasg import openapi
 
@@ -14,6 +14,9 @@ from drf_yasg import openapi
 
 
 class PlantListAPIView(APIView):
+
+    permission_classes = (IsAuthenticated, )
+
     @swagger_auto_schema(
         manual_parameters=[
             openapi.Parameter('center_lat', openapi.IN_QUERY, description="Широта центра области", type=openapi.TYPE_NUMBER, required=True),
@@ -22,7 +25,6 @@ class PlantListAPIView(APIView):
         ],
         responses={
             200: openapi.Response('200 OK', PlantSerializer(many=True)),
-            400: "Неверный запрос",
         }
     )
     def get(self, request):
@@ -64,5 +66,17 @@ class PlantListAPIView(APIView):
         )
 
         serializer = PlantSerializer(plants, many=True)
+
+        return Response(serializer.data)
+
+    @swagger_auto_schema(
+        request_body=PlantCreateSerializer()
+    )
+    def post(self, request):
+
+        serializer = PlantCreateSerializer(data=request.data, context={'request': request})
+
+        if serializer.is_valid(raise_exception=True):
+            serializer.save()
 
         return Response(serializer.data)
