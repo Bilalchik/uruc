@@ -43,6 +43,10 @@ class PlantListAPIView(APIView):
         if radius is None:
             return Response({"detail": "radius is required"}, status=status.HTTP_400_BAD_REQUEST)
 
+        if not center_lat.replace('.', '', 1).isdigit() or not center_lon.replace('.', '', 1).isdigit():
+            return Response({"detail": "center_lat and center_lon must be valid numbers"},
+                            status=status.HTTP_400_BAD_REQUEST)
+
         center_lat = float(center_lat)
         center_lon = float(center_lon)
         radius = float(radius)
