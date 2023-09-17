@@ -10,16 +10,6 @@ from .serializers import UserRegistrationSerializer
 class UserRegistrationView(generics.CreateAPIView):
     serializer_class = UserRegistrationSerializer
 
-    @swagger_auto_schema(request_body=openapi.Schema(
-        type="object",
-        properties={
-            "username": openapi.Schema(type="string", example="johndoe"),
-            "email": openapi.Schema(type="string", example="johndoe@example.com"),
-            "first_name": openapi.Schema(type="string", example="John"),
-            "last_name": openapi.Schema(type="string", example="Doe"),
-            "password": openapi.Schema(type="string", example="password123"),
-        }
-    ))
     def post(self, request, *args, **kwargs):
         serializer = self.get_serializer(data=request.data)
         if serializer.is_valid():

@@ -7,10 +7,24 @@ from rest_framework.response import Response
 from .models import Plant
 from .serializers import PlantSerializer
 from geopy.distance import great_circle
+from drf_yasg.utils import swagger_auto_schema
+from drf_yasg import openapi
+
+# api/plant-list/?center_lon=42.815961&center_lat=-74.628320&radius=10000
 
 
 class PlantListAPIView(APIView):
-
+    @swagger_auto_schema(
+        manual_parameters=[
+            openapi.Parameter('center_lat', openapi.IN_QUERY, description="Широта центра области", type=openapi.TYPE_NUMBER, required=True),
+            openapi.Parameter('center_lon', openapi.IN_QUERY, description="Долгота центра области", type=openapi.TYPE_NUMBER, required=True),
+            openapi.Parameter('radius', openapi.IN_QUERY, description="Радиус области (в километрах)", type=openapi.TYPE_NUMBER, required=True),
+        ],
+        responses={
+            200: openapi.Response('200 OK', PlantSerializer(many=True)),
+            400: "Неверный запрос",
+        }
+    )
     def get(self, request):
 
         # Центральные координаты
